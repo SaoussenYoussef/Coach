@@ -1,5 +1,6 @@
 package com.example.coach.vue;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        this.controle = Controle.getInstance();
+
     }
 
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText txtTaille;
     private EditText txtAge;
     private RadioButton rdHomme;
+    private RadioButton rdFemme;
     private TextView lblIMG;
     private ImageView imgSmiley;
 
@@ -47,9 +49,12 @@ public class MainActivity extends AppCompatActivity {
         txtTaille = (EditText)findViewById(R.id.txtTaille);
         txtAge    = (EditText)findViewById(R.id.txtAge);
         rdHomme = (RadioButton)findViewById(R.id.rdHomme);
+        rdFemme = (RadioButton)findViewById(R.id.rdFemme);
         lblIMG  = (TextView)findViewById(R.id.lblIMG);
         imgSmiley = (ImageView)findViewById(R.id.imgSmiley);
+        this.controle = Controle.getInstance(this);
         ecouteCalcul();
+        recupProfil();
     }
 
 
@@ -118,10 +123,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        this.controle.creerProfile(poids, taille, age, sexe);
+        this.controle.creerProfile(poids, taille, age, sexe, this);
 
         float img = this.controle.getImg();
         String msg = this.controle.getMessage();
+
 
         if(msg.equals("Normal")){
 
@@ -143,12 +149,37 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         lblIMG.setText(String.format("%s :  IMG%s", img, msg));
+    }
 
+    private void recupProfil(){
+
+        // Il suffit de tester si l'un des paramètres est null,
+        // alors les autres sont null, donc on verifie sur un seul
+
+        if(controle.getPoids() != null){
+            txtPoids.setText(controle.getPoids().toString());
+            txtTaille.setText(controle.getTaille().toString());
+            txtAge.setText(controle.getAge().toString());
+
+            // pour le sexe c'est différent car c'un radio Button
+
+            // cas où c'est une femme
+            rdFemme.setChecked(true);
+            // cas où c'est un Homme il faut chnagr le "setChecked"
+            // Quand on sélectionn, cela déselctionne l'autre bouton mais déselctionner
+            // un bouton ne sélectionne pas l'autre forcément
+
+            if(controle.getSexe() == 1){
+                rdHomme.setChecked(true);
+            }
+
+            // Simuler le calcul sur le bouton Calcul
+
+            ((Button)findViewById(R.id.btnCalc)).performClick();
+
+
+        }
 
     }
 
-
-    /*public void setControle(Controle controle) {
-        this.controle = controle;
-    }*/
 }

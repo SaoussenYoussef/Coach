@@ -1,6 +1,8 @@
 package com.example.coach.modele;
 
-public class Profile {
+import java.io.Serializable;
+
+public class Profile implements Serializable {
 
 // Les Constantes
 
@@ -18,12 +20,6 @@ public class Profile {
     private Integer sexe;
     private Float img;
     private String message;
-
-
-
-
-
-
 
     public Profile(Integer poids, Integer taille, Integer age, Integer sexe) {
         this.poids = poids;
