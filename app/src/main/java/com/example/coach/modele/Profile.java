@@ -1,6 +1,7 @@
 package com.example.coach.modele;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Profile implements Serializable {
 
@@ -13,7 +14,7 @@ public class Profile implements Serializable {
 
 
     // Propriétés
-
+    private Date datemesure;
     private Integer poids;
     private Integer taille;
     private Integer age;
@@ -21,7 +22,8 @@ public class Profile implements Serializable {
     private Float img;
     private String message;
 
-    public Profile(Integer poids, Integer taille, Integer age, Integer sexe) {
+    public Profile(Date datemesure, Integer poids, Integer taille, Integer age, Integer sexe) {
+        this.datemesure = datemesure;
         this.poids = poids;
         this.taille = taille;
         this.age = age;
@@ -54,6 +56,9 @@ public class Profile implements Serializable {
         return message;
     }
 
+    public Date getDatemesure() {
+        return datemesure;
+    }
 
     private void calcIMG() {
 

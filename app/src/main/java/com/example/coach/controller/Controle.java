@@ -2,10 +2,11 @@ package com.example.coach.controller;
 
 import android.content.Context;
 
+import com.example.coach.modele.AccesLocal;
 import com.example.coach.modele.Profile;
 import com.example.coach.outils.Serializer;
 
-import org.w3c.dom.ls.LSSerializer;
+import java.util.Date;
 
 public final class Controle {
 
@@ -15,6 +16,7 @@ public final class Controle {
     private static Controle instance = null;
     private static Profile profile;
     private static String nomFic = "saveprofil";
+    private static AccesLocal accesLocal;
 
     /**
      * Constructeur vide, on met super car TOUTES les classes héritent de la classe Object
@@ -33,7 +35,10 @@ public final class Controle {
 
         if(Controle.instance == null){
             Controle.instance = new Controle();
-            recupSerialize(context);
+            // Au moment de la création de l'instantce Singleton je déserialize
+         //   recupSerialize(context);
+            accesLocal = new AccesLocal(context);
+            profile = accesLocal.recupDernier();
         }
         return Controle.instance ;
     }
@@ -50,8 +55,12 @@ public final class Controle {
     public void creerProfile(Integer poids, Integer taille, Integer age, Integer sexe, Context context){
 
 
-        profile = new Profile(poids, taille, age, sexe );
-        Serializer.serialiaze(nomFic, profile, context);
+        profile = new Profile(new Date(), poids, taille, age, sexe );
+        accesLocal.ajout(profile);
+
+        // Au moment de la création du Profil, je le sérialise
+
+      //  Serializer.serialiaze(nomFic, profile, context);
 
 
     }
