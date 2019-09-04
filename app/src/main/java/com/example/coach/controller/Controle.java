@@ -2,9 +2,12 @@ package com.example.coach.controller;
 
 import android.content.Context;
 
+import com.example.coach.modele.AccesDistant;
 import com.example.coach.modele.AccesLocal;
 import com.example.coach.modele.Profile;
 import com.example.coach.outils.Serializer;
+
+import org.json.JSONArray;
 
 import java.util.Date;
 
@@ -16,7 +19,8 @@ public final class Controle {
     private static Controle instance = null;
     private static Profile profile;
     private static String nomFic = "saveprofil";
-    private static AccesLocal accesLocal;
+   // private static AccesLocal accesLocal;
+    private static AccesDistant accesDistant;
 
     /**
      * Constructeur vide, on met super car TOUTES les classes héritent de la classe Object
@@ -37,8 +41,9 @@ public final class Controle {
             Controle.instance = new Controle();
             // Au moment de la création de l'instantce Singleton je déserialize
          //   recupSerialize(context);
-            accesLocal = new AccesLocal(context);
-            profile = accesLocal.recupDernier();
+            accesDistant = new AccesDistant();
+         //   profile = accesLocal.recupDernier();
+            accesDistant.envoi("dernier", new JSONArray());
         }
         return Controle.instance ;
     }
@@ -56,9 +61,13 @@ public final class Controle {
 
 
         profile = new Profile(new Date(), poids, taille, age, sexe );
-        accesLocal.ajout(profile);
 
-        // Au moment de la création du Profil, je le sérialise
+
+        //accesLocal.ajout(profile);
+
+        accesDistant.envoi("enreg", profile.convertToJSONArray() );
+
+        // ****Au moment de la création du Profil, je le sérialise
 
       //  Serializer.serialiaze(nomFic, profile, context);
 

@@ -1,7 +1,11 @@
 package com.example.coach.modele;
 
+import org.json.JSONArray;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Profile implements Serializable {
 
@@ -94,6 +98,24 @@ public class Profile implements Serializable {
                 message = "Trop élevé";
             }
         }
+    }
+
+
+    /**
+     * conversion du profil au format JSONArray
+     * @return
+     */
+    public JSONArray convertToJSONArray(){
+
+        List laListe = new ArrayList();
+
+        laListe.add(datemesure);
+        laListe.add(poids);
+        laListe.add(taille);
+        laListe.add(age);
+        laListe.add(sexe);
+        return new JSONArray(laListe);
+
     }
 
 }
